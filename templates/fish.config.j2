@@ -1,0 +1,12 @@
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+    theme_gruvbox dark
+    set -g fish_greeting
+
+    abbr -a k kubectl
+    abbr -a kgp kubectl get pods
+    abbr -a kgn kubectl get nodes
+    abbr -a kgd kubectl get deployments
+
+    fish_add_path ~/.local/bin
+end

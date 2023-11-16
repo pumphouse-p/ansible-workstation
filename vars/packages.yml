@@ -1,0 +1,24 @@
+---
+workstation_packages:
+  - vim
+  - git
+  - fish
+  - firefox
+  - tmux
+  - curl
+  - nodejs
+  - ansible
+  - "@container-management"
+  - htop
+  - gcc-go
+  - rust
+  - kubectl
+  - syncthing
+  - syncthing-tools
+
+workstation_flatpaks:
+  - com.spotify.Client
+  - md.obsidian.Obsidian
+  - org.signal.Signal
+  - org.videolan.VLC
+  - de.haeckerfelix.Shortwave

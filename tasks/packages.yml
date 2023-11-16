@@ -1,0 +1,6 @@
+---
+- name: Install packages
+  ansible.builtin.dnf:
+    name: "{{ workstation_packages }}"
+    state: present
+  become: true

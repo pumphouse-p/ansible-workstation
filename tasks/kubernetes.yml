@@ -1,0 +1,19 @@
+---
+- name: Ensure bin dir exists
+  ansible.builtin.file:
+    dest: "{{ ansible_env.HOME }}/.local/bin/src"
+    state: directory
+
+- name: Download kubens and kubectx
+  ansible.builtin.git:
+    repo: https://github.com/ahmetb/kubectx
+    dest: "{{ ansible_env.HOME }}/.local/bin/src/kubectx"
+
+- name: Create symbolic links
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/.local/bin/src/kubectx/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.local/bin/{{ item }}"
+    state: link
+  loop:
+    - kubectx
+    - kubens

@@ -1,0 +1,119 @@
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" VimPlug Plugin Manager
+call plug#begin('~/.vim/plugged')
+    Plug 'itchyny/lightline.vim'
+    Plug 'shinchu/lightline-gruvbox.vim'
+    Plug 'morhetz/gruvbox'
+    Plug 'flazz/vim-colorschemes'
+    Plug 'sheerun/vim-polyglot'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'yaegassy/coc-ansible', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'pearofducks/ansible-vim'
+    Plug 'scrooloose/nerdtree'
+    Plug 'xuyuanp/nerdtree-git-plugin'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-surround'
+    Plug 'godlygeek/tabular'
+    Plug 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
+    " Plug 'preservim/vim-markdown'
+call plug#end()
+" End Plugins
+
+" Run PlugInstall if there are missing plugins
+if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+filetype on
+filetype plugin on
+" Indentation related settings
+" filetype plugin indent on
+set shiftwidth=2
+set tabstop=2
+set expandtab
+set softtabstop=2
+set autoindent
+set smartindent
+" End Indentation
+
+" Various interface settings
+set nu
+set relativenumber
+set scrolloff=10
+" End Interface
+
+" Colors
+syntax enable
+" End Colors
+
+" Keyboard shortcuts
+nmap <S-l> :noh<CR>
+set pastetoggle=<C-v>
+" End Keyboard
+
+" Plugin configuration
+" lightline
+set laststatus=2
+if !has('gui_running')
+    set t_Co=256
+endif
+let g:lightline = {}
+let g:lightline.colorscheme = 'gruvbox'
+
+" vim-colorschemes
+" colorscheme gruvbox
+
+set background=dark
+autocmd vimenter * ++nested colorscheme gruvbox
+
+" coc.nvim
+" use <tab> to trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<Tab>" :
+            \ coc#refresh()
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" coc-ansible
+let g:coc_filetype_map = {
+    \ 'yaml.ansible': 'ansible',
+\ }
+
+au BufRead,BufNewFile *.yml set filetype=yaml.ansible
+
+" NERDTree
+" Start NERDTree and put the cursor back in the other window
+autocmd VimEnter * NERDTree | wincmd p
+
+" Start NERDTree when vim is started without a file
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+" autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+" autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+noremap <C-h> <C-w>h
+let g:NERDTreeGitStatusUseNerdFonts = 1
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeWinSize = 60
+
+set splitbelow

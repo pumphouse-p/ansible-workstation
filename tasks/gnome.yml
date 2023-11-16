@@ -1,0 +1,5 @@
+---
+- name: Set alt-tab to all workspaces
+  ansible.builtin.shell:
+    cmd: gsettings set org.gnome.shell.window-switcher current-workspace-only false
+

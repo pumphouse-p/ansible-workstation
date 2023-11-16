@@ -1,0 +1,13 @@
+---
+- name: Install flatpak remotes
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+
+- name: Install flatpaks
+  community.general.flatpak:
+    name: "{{ workstation_flatpaks }}"
+    state: present
+    method: user

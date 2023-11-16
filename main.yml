@@ -1,0 +1,36 @@
+---
+- name: Setup a linux workstation
+  hosts: all
+  become: false
+  gather_facts: true
+  vars_files:
+    - vars/packages.yml
+
+  tasks:
+    - name: Install packages
+      ansible.builtin.include_tasks:
+        file: tasks/packages.yml
+
+    - name: Install flatpaks
+      ansible.builtin.include_tasks:
+        file: tasks/flatpaks.yml
+
+    - name: Include fish-specific tasks
+      ansible.builtin.include_tasks:
+        file: tasks/fish.yml
+
+    - name: Include gnome-specific tasks
+      ansible.builtin.include_tasks:
+        file: tasks/gnome.yml
+
+    - name: Include tmux-specific tasks
+      ansible.builtin.include_tasks:
+        file: tasks/tmux.yml
+
+    - name: Include vim-specific tasks
+      ansible.builtin.include_tasks:
+        file: tasks/vim.yml
+
+    - name: Include kubenernetes-specific tasks
+      ansible.builtin.include_tasks:
+        file: tasks/kubernetes.yml

@@ -1,0 +1,31 @@
+---
+- name: Download fisher
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish
+    dest: /tmp/fisher.fish
+    mode: 0644
+
+- name: Install fisher
+  ansible.builtin.shell:
+    cmd: source /tmp/fisher.fish && fisher install jorgebucaran/fisher
+    executable: /usr/bin/fish
+
+- name: Install fish plugins
+  ansible.builtin.shell:
+    cmd: fisher install {{ item }}
+    executable: /usr/bin/fish
+  loop:
+    - IlanCosman/tide
+    - jomik/fish-gruvbox
+
+- name: Write out fish config
+  ansible.builtin.template:
+    src: templates/fish.config.j2
+    dest: "{{ ansible_env.HOME }}/.config/fish/config.fish"
+    mode: 0644
+
+- name: Set default shell for {{ ansible_user_id }}
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /usr/bin/fish
+  become: true
